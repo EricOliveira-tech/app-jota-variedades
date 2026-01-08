@@ -8,7 +8,7 @@ export interface Product {
   price: number; // cents
   stock_qty: number; // can go negative if out_of_stock flag used
   category?: string;
-  min_stock_qty?: number;
+  min_stock_qty: number;
   is_dirty?: boolean;
   last_synced_at?: string; // ISO
   created_at?: string;

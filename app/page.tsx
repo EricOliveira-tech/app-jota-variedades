@@ -7,7 +7,7 @@ import { EncomendasPage } from "@/components/pages/encomendas-page";
 import { ProdutosPage } from "@/components/pages/produtos-page";
 import { RelatoriosPage } from "@/components/pages/relatorios-page";
 import { Toaster } from "@/components/ui/toaster";
-import { HomePage } from "@/components/pages/home-page";
+import HomePage from "@/components/pages/home/page";
 
 export type TabType =
   | "home"
