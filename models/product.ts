@@ -7,17 +7,19 @@ export interface Product {
   name: string;
   price: number; // cents
   stock_qty: number; // can go negative if out_of_stock flag used
+  category?: string;
   min_stock_qty?: number;
   is_dirty?: boolean;
   last_synced_at?: string; // ISO
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface SaleItem {
   id: UUID;
   sale_id: UUID;
   product_id: UUID;
+  product_name: string;
   qty: number;
   unit_price: number; // cents snapshot
   total: number; // derived unit_price * qty
@@ -25,14 +27,39 @@ export interface SaleItem {
 
 export interface Sale {
   id: UUID;
+  items: SaleItem[];
   total: number; // cents
   payment_method: PaymentMethod;
+  paymentMethod: PaymentMethod; // alias
   out_of_stock?: boolean;
+  time: string; // ISO
+  date: string; // ISO
   created_at: string;
   updated_at: string;
 }
 
-export type OrderStatus = "pending" | "delivered" | "cancelled";
+export interface LatestSale {
+  id: number;
+  product: string;
+  price: number;
+  time: string;
+  payment: string;
+}
+
+export interface SalesSummary {
+  total: number;
+  quantity: number;
+  pix: number;
+  cash: number;
+  card: number;
+}
+
+export type OrderStatus =
+  | "pending"
+  | "arrived"
+  | "separated"
+  | "delivered"
+  | "cancelled";
 
 export interface OrderItem {
   id: UUID;
