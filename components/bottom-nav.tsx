@@ -1,44 +1,55 @@
-"use client"
+"use client";
 
-import { Home, ShoppingCart, Package, Box, BarChart3 } from "lucide-react"
-import { cn } from "@/lib/utils"
-import type { TabType } from "@/app/page"
+import { Home, ShoppingCart, Package, Box, BarChart3 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import type { TabType } from "@/app/page";
 
 interface BottomNavProps {
-  activeTab: TabType
-  onTabChange: (tab: TabType) => void
+  activeTab: TabType;
+  onTabChange: (tab: TabType) => void;
+}
+interface TabItem {
+  id: TabType;
+  label: string;
+  icon: React.ElementType;
 }
 
-const tabs = [
-  { id: "home" as const, label: "Home", icon: Home },
-  { id: "vendas" as const, label: "Vendas", icon: ShoppingCart },
-  { id: "encomendas" as const, label: "Encomendas", icon: Package },
-  { id: "produtos" as const, label: "Produtos", icon: Box },
-  { id: "relatorios" as const, label: "Relatórios", icon: BarChart3 },
-]
+const tabs: TabItem[] = [
+  { id: "home", label: "Home", icon: Home },
+  { id: "vendas", label: "Vendas", icon: ShoppingCart },
+  { id: "encomendas", label: "Encomendas", icon: Package },
+  { id: "produtos", label: "Produtos", icon: Box },
+  { id: "relatorios", label: "Relatórios", icon: BarChart3 },
+];
 
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card safe-area-bottom">
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-card"
+      role="tablist"
+      aria-label="Navegação inferior"
+    >
       <div className="mx-auto flex max-w-lg items-center justify-around">
-        {tabs.map((tab) => {
-          const Icon = tab.icon
-          const isActive = activeTab === tab.id
+        {tabs.map(({ id, label, icon: Icon }) => {
+          const isActive = activeTab === id;
           return (
             <button
-              key={tab.id}
-              onClick={() => onTabChange(tab.id)}
+              key={id}
+              onClick={() => onTabChange(id)}
+              role="tab"
+              aria-selected={isActive}
+              aria-label={label}
               className={cn(
-                "flex flex-1 flex-col items-center gap-1 py-3 transition-colors",
+                "flex flex-1 flex-col items-center gap-1 py-3 transition-colors focus:outline-none",
                 isActive ? "text-primary" : "text-muted-foreground",
               )}
             >
-              <Icon className={cn("h-6 w-6", isActive && "text-primary")} />
-              <span className={cn("text-xs font-medium", isActive && "text-primary")}>{tab.label}</span>
+              <Icon className="h-6 w-6" />
+              <span className="text-xs font-medium">{label}</span>
             </button>
-          )
+          );
         })}
       </div>
     </nav>
-  )
+  );
 }
