@@ -23,6 +23,10 @@ export function ProdutosPage() {
     p.name.toLowerCase().includes(search.toLowerCase()),
   );
 
+  const filteredproducts = products.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase()),
+  );
+
   return (
     <div className="flex flex-col">
       <Header title="Produtos" subtitle={`${products.length} cadastrados`} />
@@ -84,7 +88,7 @@ export function ProdutosPage() {
               Todos os Produtos
             </h2>
           )}
-          {filteredProdutos.length === 0 ? (
+          {filteredproducts.length === 0 ? (
             <EmptyState
               icon={Box}
               title="Nenhum produto encontrado"
@@ -97,7 +101,7 @@ export function ProdutosPage() {
           ) : (
             <Card>
               <CardContent className="divide-y divide-border p-0">
-                {filteredProdutos.map((produto) => (
+                {filteredproducts.map((produto) => (
                   <button
                     key={produto.id}
                     onClick={() => setSelectedProduto(produto)}

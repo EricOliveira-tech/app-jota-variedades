@@ -29,7 +29,6 @@ export interface Sale {
   id: UUID;
   items: SaleItem[];
   total: number; // cents
-  payment_method: PaymentMethod;
   paymentMethod: PaymentMethod; // alias
   out_of_stock?: boolean;
   time: string; // ISO
@@ -63,10 +62,11 @@ export type OrderStatus =
 
 export interface OrderItem {
   id: UUID;
-  order_id: UUID;
+  order_id?: UUID;
   product_id: UUID;
   qty: number;
   unit_price: number;
+  total: number;
 }
 
 export interface Order {
@@ -74,7 +74,9 @@ export interface Order {
   customer_name: string;
   phone: string; // digits only, e.g., 55DDDNNUUUU
   status: OrderStatus;
-  notes?: string;
+  items: OrderItem[];
+  total: number;
+  note?: string;
   created_at: string;
   updated_at: string;
 }

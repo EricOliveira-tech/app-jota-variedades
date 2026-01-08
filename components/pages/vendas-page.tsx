@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Plus, ShoppingCart } from "lucide-react";
 import { PaymentBadge } from "@/components/payment-badge";
 import { EmptyState } from "@/components/empty-state";
-import { NovaVendaModal } from "@/components/modals/nova-venda-modal";
+
 import { DetalheVendaModal } from "@/components/modals/detalhe-venda-modal";
 import { sales } from "@/lib/mock-data";
 import { Order, SaleItem } from "@/models/product";
+import NewSaleModal from "../modals/NewSaleModal";
 
 export function VendasPage() {
   const [showNovaVenda, setShowNovaVenda] = useState(false);
@@ -76,7 +77,7 @@ export function VendasPage() {
                           <span className="text-xs text-muted-foreground">
                             {venda.date}
                           </span>
-                          <PaymentBadge type={venda.payment_method} />
+                          <PaymentBadge type={venda.paymentMethod} />
                         </div>
                       </div>
                     </div>
@@ -93,7 +94,7 @@ export function VendasPage() {
         )}
       </div>
 
-      <NovaVendaModal
+      <NewSaleModal
         open={showNovaVenda}
         onClose={() => setShowNovaVenda(false)}
       />

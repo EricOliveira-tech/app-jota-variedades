@@ -35,7 +35,14 @@ interface PaymentBadgeProps {
 
 export function PaymentBadge({ type, className }: PaymentBadgeProps) {
   const config = paymentConfig[type];
+
+  // If the type is not recognized, render nothing or a default
+  if (!config) {
+    return null;
+  }
+
   const Icon = config.icon;
+  console.log(config);
   return (
     <span
       className={cn(

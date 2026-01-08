@@ -1,54 +1,73 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Header } from "@/components/header"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Plus, Package, Phone } from "lucide-react"
-import { encomendas, type StatusEncomenda, type Encomenda } from "@/lib/mock-data"
-import { StatusBadge } from "@/components/status-badge"
-import { SearchInput } from "@/components/search-input"
-import { EmptyState } from "@/components/empty-state"
-import { NovaEncomendaModal } from "@/components/modals/nova-encomenda-modal"
-import { DetalheEncomendaModal } from "@/components/modals/detalhe-encomenda-modal"
-import { cn } from "@/lib/utils"
+import { useState } from "react";
+import { Header } from "@/components/header";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Plus, Package, Phone } from "lucide-react";
+import { StatusBadge } from "@/components/status-badge";
+import { SearchInput } from "@/components/search-input";
+import { EmptyState } from "@/components/empty-state";
 
-const statusFilters: { value: StatusEncomenda | "todos"; label: string }[] = [
+import { DetalheEncomendaModal } from "@/components/modals/detalhe-encomenda-modal";
+import { cn } from "@/lib/utils";
+import { OrderStatus } from "@/models/product";
+import { orders, Order } from "@/lib/mock-data";
+import NewOrderModal from "../modals/NewOrderModal";
+
+const statusFilters: { value: OrderStatus | "todos"; label: string }[] = [
   { value: "todos", label: "Todos" },
-  { value: "pendente", label: "Pendente" },
-  { value: "chegou", label: "Chegou" },
-  { value: "separado", label: "Separado" },
-  { value: "entregue", label: "Entregue" },
-  { value: "cancelado", label: "Cancelado" },
-]
+  { value: "pending", label: "Pendente" },
+  { value: "arrived", label: "Chegou" },
+  { value: "separated", label: "Separado" },
+  { value: "delivered", label: "Entregue" },
+  { value: "cancelled", label: "Cancelado" },
+];
 
 export function EncomendasPage() {
-  const [search, setSearch] = useState("")
-  const [statusFilter, setStatusFilter] = useState<StatusEncomenda | "todos">("todos")
-  const [showNovaEncomenda, setShowNovaEncomenda] = useState(false)
-  const [selectedEncomenda, setSelectedEncomenda] = useState<Encomenda | null>(null)
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<OrderStatus | "todos">(
+    "todos",
+  );
+  const [showNovaEncomenda, setShowNovaEncomenda] = useState(false);
+  const [selectedEncomenda, setSelectedEncomenda] = useState<Order | null>(
+    null,
+  );
 
-  const filteredEncomendas = encomendas.filter((e) => {
-    const matchesSearch = e.cliente.toLowerCase().includes(search.toLowerCase()) || e.telefone.includes(search)
-    const matchesStatus = statusFilter === "todos" || e.status === statusFilter
-    return matchesSearch && matchesStatus
-  })
+  const filteredEncomendas = orders.filter((e) => {
+    const matchesSearch =
+      e.customer.toLowerCase().includes(search.toLowerCase()) ||
+      e.phone.includes(search);
+    const matchesStatus = statusFilter === "todos" || e.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
 
-  const activeCount = encomendas.filter(
-    (e) => e.status === "pendente" || e.status === "chegou" || e.status === "separado",
-  ).length
+  const activeCount = orders.filter(
+    (e) =>
+      e.status === "pending" ||
+      e.status === "arrived" ||
+      e.status === "separated",
+  ).length;
 
   return (
     <div className="flex flex-col">
       <Header title="Encomendas" subtitle={`${activeCount} ativas`} />
 
       <div className="flex flex-col gap-4 p-4">
-        <Button size="lg" className="h-14 gap-2" onClick={() => setShowNovaEncomenda(true)}>
+        <Button
+          size="lg"
+          className="h-14 gap-2"
+          onClick={() => setShowNovaEncomenda(true)}
+        >
           <Plus className="h-5 w-5" />
           <span className="font-semibold">Nova Encomenda</span>
         </Button>
 
-        <SearchInput value={search} onChange={setSearch} placeholder="Buscar por nome ou telefone..." />
+        <SearchInput
+          value={search}
+          onChange={setSearch}
+          placeholder="Buscar por nome ou telefone..."
+        />
 
         <div className="flex gap-2 overflow-x-auto pb-2">
           {statusFilters.map((filter) => (
@@ -88,22 +107,29 @@ export function EncomendasPage() {
                   >
                     <div className="mb-2 flex items-start justify-between">
                       <div>
-                        <p className="font-semibold text-foreground">{encomenda.cliente}</p>
+                        <p className="font-semibold text-foreground">
+                          {encomenda.customer}
+                        </p>
                         <div className="mt-1 flex items-center gap-1 text-sm text-muted-foreground">
                           <Phone className="h-3 w-3" />
-                          {encomenda.telefone}
+                          {encomenda.phone}
                         </div>
                       </div>
                       <StatusBadge status={encomenda.status} />
                     </div>
                     <div className="mt-3 flex items-center justify-between border-t border-border pt-3">
                       <p className="text-sm text-muted-foreground">
-                        {encomenda.itens.length === 1
-                          ? `${encomenda.itens[0].quantidade}x ${encomenda.itens[0].nome}`
-                          : `${encomenda.itens.length} itens`}
+                        {encomenda.items.length === 1
+                          ? `${encomenda.items[0].qty}x ${
+                              encomenda.items[0].product_name || "produto"
+                            }`
+                          : `${encomenda.items.length} itens`}
                       </p>
                       <p className="font-semibold text-foreground">
-                        R$ {encomenda.total.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                        R${" "}
+                        {encomenda.total.toLocaleString("pt-BR", {
+                          minimumFractionDigits: 2,
+                        })}
                       </p>
                     </div>
                   </button>
@@ -114,8 +140,14 @@ export function EncomendasPage() {
         )}
       </div>
 
-      <NovaEncomendaModal open={showNovaEncomenda} onClose={() => setShowNovaEncomenda(false)} />
-      <DetalheEncomendaModal encomenda={selectedEncomenda} onClose={() => setSelectedEncomenda(null)} />
+      <NewOrderModal
+        open={showNovaEncomenda}
+        onClose={() => setShowNovaEncomenda(false)}
+      />
+      <DetalheEncomendaModal
+        encomenda={selectedEncomenda}
+        onClose={() => setSelectedEncomenda(null)}
+      />
     </div>
-  )
+  );
 }

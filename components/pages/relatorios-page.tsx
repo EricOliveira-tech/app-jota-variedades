@@ -139,24 +139,26 @@ export function RelatoriosPage() {
           ) : (
             <Card>
               <CardContent className="divide-y divide-border p-0">
-                {topProdutos.map(([nome, quantity], index) => (
-                  <div
-                    key={nome}
-                    className="flex items-center justify-between p-3"
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
-                        {index + 1}
-                      </span>
-                      <span className="font-medium text-foreground">
-                        {nome}
+                {topProdutos.map(
+                  ([nome, quantity]: [string, number], index: number) => (
+                    <div
+                      key={nome}
+                      className="flex items-center justify-between p-3"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+                          {index + 1}
+                        </span>
+                        <span className="font-medium text-foreground">
+                          {nome}
+                        </span>
+                      </div>
+                      <span className="rounded-full bg-muted px-3 py-1 text-sm font-semibold">
+                        {quantity} un.
                       </span>
                     </div>
-                    <span className="rounded-full bg-muted px-3 py-1 text-sm font-semibold">
-                      {resumo.quantity} un.
-                    </span>
-                  </div>
-                ))}
+                  ),
+                )}
               </CardContent>
             </Card>
           )}

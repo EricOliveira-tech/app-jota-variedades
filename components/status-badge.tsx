@@ -1,21 +1,37 @@
-import { cn } from "@/lib/utils"
-import type { StatusEncomenda } from "@/lib/mock-data"
+import { cn } from "@/lib/utils";
+import { OrderStatus } from "@/models/product";
 
-const statusConfig: Record<StatusEncomenda, { label: string; className: string }> = {
-  pendente: { label: "Pendente", className: "bg-amber-100 text-amber-700 border-amber-200" },
-  chegou: { label: "Chegou", className: "bg-blue-100 text-blue-700 border-blue-200" },
-  separado: { label: "Separado", className: "bg-purple-100 text-purple-700 border-purple-200" },
-  entregue: { label: "Entregue", className: "bg-emerald-100 text-emerald-700 border-emerald-200" },
-  cancelado: { label: "Cancelado", className: "bg-red-100 text-red-700 border-red-200" },
-}
+const statusConfig: Record<OrderStatus, { label: string; className: string }> =
+  {
+    pending: {
+      label: "Pendente",
+      className: "bg-amber-100 text-amber-700 border-amber-200",
+    },
+    arrived: {
+      label: "Chegou",
+      className: "bg-blue-100 text-blue-700 border-blue-200",
+    },
+    separated: {
+      label: "Separado",
+      className: "bg-purple-100 text-purple-700 border-purple-200",
+    },
+    delivered: {
+      label: "Entregue",
+      className: "bg-emerald-100 text-emerald-700 border-emerald-200",
+    },
+    cancelled: {
+      label: "Cancelado",
+      className: "bg-red-100 text-red-700 border-red-200",
+    },
+  };
 
 interface StatusBadgeProps {
-  status: StatusEncomenda
-  className?: string
+  status: OrderStatus;
+  className?: string;
 }
 
 export function StatusBadge({ status, className }: StatusBadgeProps) {
-  const config = statusConfig[status]
+  const config = statusConfig[status];
   return (
     <span
       className={cn(
@@ -26,5 +42,5 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
     >
       {config.label}
     </span>
-  )
+  );
 }

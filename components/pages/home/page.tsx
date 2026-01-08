@@ -10,13 +10,14 @@ import {
   LATEST_SALES,
 } from "@/lib/mock-data";
 import type { TabType } from "@/app/page";
-import { NovaVendaModal as NewSaleModal } from "@/components/modals/nova-venda-modal";
-import { NovaEncomendaModal as NewOrderModal } from "@/components/modals/nova-encomenda-modal";
+
 import LowStockAlert from "./components/LowStockAlert";
 import DailySummary from "./components/DailySummary";
 import PendingOrdersAlert from "./components/PendingOrdersAlert";
 import LatestSales from "./components/LatestSales";
 import QuickActions from "./components/QuickActions";
+import NewSaleModal from "@/components/modals/NewSaleModal";
+import NewOrderModal from "@/components/modals/NewOrderModal";
 
 interface HomePageProps {
   onNavigate: (tab: TabType) => void;
